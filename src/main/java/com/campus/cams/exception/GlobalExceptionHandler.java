@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
                 .body(message);
     }
 
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<String> handleStudentNotFoundException(
+            StudentNotFoundException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
 }

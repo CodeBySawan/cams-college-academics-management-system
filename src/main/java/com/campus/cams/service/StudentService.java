@@ -2,6 +2,7 @@ package com.campus.cams.service;
 
 import com.campus.cams.entity.Student;
 import com.campus.cams.exception.DuplicateStudentException;
+import com.campus.cams.exception.StudentNotFoundException;
 import com.campus.cams.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,11 +37,9 @@ public class StudentService {
     public Student updateStudent(Long id, Student updatedStudent) {
 
         Student existingStudent = studentRepository.findById(id)
-                .orElse(null);
-
-        if (existingStudent == null) {
-            return null;
-        }
+                .orElseThrow(() -> new StudentNotFoundException(
+                        "Student not found with id: " + id
+                ));
 
         if (studentRepository.existsByRollNumberAndIdNot(
                 updatedStudent.getRollNumber(), id)) {
@@ -68,8 +67,11 @@ public class StudentService {
     }
 
 
-    public Student getStudentById( Long id) {
-        return studentRepository.findById(id).orElse(null);
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(
+                        "Student not found with id: " + id
+                ));
     }
 
     public List<Student> getAllStudents() {
@@ -78,6 +80,10 @@ public class StudentService {
 
 
     public void deleteStudent(Long id) {
+        studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(
+                        "Student not found with id: " + id
+                ));
         studentRepository.deleteById(id);
     }
 }
