@@ -2,6 +2,7 @@ package com.campus.cams.controller;
 
 import com.campus.cams.entity.Student;
 import com.campus.cams.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class StudentController {
     }
 
     @PostMapping("/createStudent")
-    public Student createStudent(@RequestBody Student student) {
+    public Student createStudent(@Valid @RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
@@ -33,7 +34,7 @@ public class StudentController {
 
 
     @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
+    public Student updateStudent(@PathVariable Long id,@Valid @RequestBody Student student) {
         return studentService.updateStudent(id, student);
     }
 
