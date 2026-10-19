@@ -60,10 +60,8 @@ public class Student {
     @Column(name = "admission_year", nullable = false)
     private Integer admissionYear;
 
-    // Kept as String for now; can be swapped for an enum later
-    @NotBlank(message = "Status is required")
-    @Size(max = 30, message = "Status cannot exceed 30 characters")
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private String status;
+    private StudentStatus status;
 }
 
