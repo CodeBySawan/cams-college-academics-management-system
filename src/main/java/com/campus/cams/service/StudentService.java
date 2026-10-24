@@ -53,10 +53,6 @@ public class StudentService {
     //update Student
     public StudentResponseDTO updateStudent(Long id, StudentRequestDTO updatedStudent) {
 
-        Student existingStudent = studentRepository.findById(id)
-                .orElseThrow(() -> new StudentNotFoundException(
-                        "Student not found with id: " + id
-                ));
 
         if (studentRepository.existsByRollNumberAndIdNot(
                 updatedStudent.getRollNumber(), id)) {
@@ -72,7 +68,7 @@ public class StudentService {
             );
         }
 
-        existingStudent=StudentMapper.toEntity(updatedStudent);
+        Student existingStudent=StudentMapper.toEntity(updatedStudent);
 
         Student s= studentRepository.save(existingStudent);
 
@@ -106,6 +102,10 @@ public class StudentService {
 
 
     public List<StudentResponseDTO> searchStudents(String keyword) {
+
+        if (keyword == null || keyword.isBlank()) {
+            throw new IllegalArgumentException("Search keyword cannot be empty");
+        }
 
         List<Student> students = new ArrayList<>();
 
